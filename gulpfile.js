@@ -3,6 +3,7 @@ var clean = require('gulp-clean');
 var uglify = require('gulp-uglify');
 var csso = require('gulp-csso');
 var htmlmin = require('gulp-htmlmin');
+var ghPages = require('gulp-gh-pages');
 
 var bases = {
   src: 'src/',
@@ -47,6 +48,11 @@ gulp.task('uglifyHTML', ['clean'], function() {
     .pipe(gulp.dest(bases.dist + path));
   });
 });
+
+gulp.task('deploy', function() {
+  return gulp.src(bases.dist + '/**/*')
+    .pipe(ghPages());
+})
 
 gulp.task('uglify', ['uglifyJS', 'uglifyCSS', 'uglifyHTML']);
 gulp.task('default', ['uglify']);
