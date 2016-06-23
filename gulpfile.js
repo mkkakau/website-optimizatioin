@@ -4,6 +4,7 @@ var uglify = require('gulp-uglify');
 var csso = require('gulp-csso');
 var htmlmin = require('gulp-htmlmin');
 var ghPages = require('gulp-gh-pages');
+var imagemin = require('gulp-imagemin');
 
 var bases = {
   src: 'src/',
@@ -13,7 +14,8 @@ var bases = {
 var paths = {
   js: ['js/', 'views/js/'],
   css: ['css/', 'views/css/'],
-  html: ['', 'views/']
+  html: ['', 'views/'],
+  img: ['img/', 'views/images/']
 }
 
 // Clean Task - Obliterates dist
@@ -24,7 +26,7 @@ gulp.task('clean', function(){
 
 // Uglify JS Task - Uglifies JS
 gulp.task('uglifyJS', ['clean'], function() {
-  paths.js.forEach(function(path, index, array) {
+  return paths.js.forEach(function(path, index, array) {
     gulp.src(bases.src + path + '*.js')
     .pipe(uglify())
     .pipe(gulp.dest(bases.dist + path));
@@ -33,7 +35,7 @@ gulp.task('uglifyJS', ['clean'], function() {
 
 // Uglify CSS Task - Uglifies CSS
 gulp.task('uglifyCSS', ['clean'], function() {
-  paths.css.forEach(function(path, index, array) {
+  return paths.css.forEach(function(path, index, array) {
     gulp.src(bases.src + path + '*.css')
     .pipe(csso())
     .pipe(gulp.dest(bases.dist + path));
@@ -42,19 +44,36 @@ gulp.task('uglifyCSS', ['clean'], function() {
 
 // Uglify HTML Task - Uglifies HTML
 gulp.task('uglifyHTML', ['clean'], function() {
-  paths.html.forEach(function(path, index, array) {
+  return paths.html.forEach(function(path, index, array) {
     gulp.src(bases.src + path + '*.html')
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(bases.dist + path));
   });
 });
 
+// Minify Image Task - Minify PNG, JPEG, GIF and SVG images
+gulp.task('minifyimg', function() {
+  return paths.img.forEach(function(path, index, array) {
+    gulp.src(bases.src + path + '*')
+    .pipe(imagemin())
+    .pipe(gulp.dest('.imagemin/' + path));
+  });
+});
+
+gulp.task('images', ['clean'], function() {
+  return paths.img.forEach(function(path, index, array) {
+    gulp.src('.imagemin/' + path + '*')
+    .pipe(gulp.dest(bases.dist + path));
+  });
+});
+
+// Deploy dist to gh-pages
 gulp.task('deploy', function() {
   return gulp.src(bases.dist + '/**/*')
     .pipe(ghPages());
 })
 
 gulp.task('uglify', ['uglifyJS', 'uglifyCSS', 'uglifyHTML']);
-gulp.task('default', ['uglify']);
+gulp.task('default', ['clean', 'uglify', 'images']);
 
 
