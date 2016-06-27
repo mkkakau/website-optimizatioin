@@ -501,6 +501,7 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
+  // Use getElementsByClassName instead of querySelectorAll
   var items = document.getElementsByClassName('mover');
 
   // Refactor and remove phase calculation from loop
@@ -534,7 +535,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 50; i++) {
+  for (var i = 0; i < 32; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
