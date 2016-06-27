@@ -5,6 +5,8 @@ var csso = require('gulp-csso');
 var htmlmin = require('gulp-htmlmin');
 var ghPages = require('gulp-gh-pages');
 var imagemin = require('gulp-imagemin');
+var imageresize = require('gulp-image-resize');
+var rename = require('gulp-rename');
 
 var bases = {
   src: 'src/',
@@ -15,7 +17,8 @@ var paths = {
   js: ['js/', 'views/js/'],
   css: ['css/', 'views/css/'],
   html: ['', 'views/'],
-  img: ['img/', 'views/images/']
+  img: ['img/', 'views/images/'],
+  thumb: ['views/images/pizzeria.jpg']
 }
 
 // Clean Task - Obliterates dist
@@ -57,6 +60,20 @@ gulp.task('minifyimg', function() {
     gulp.src(bases.src + path + '*')
     .pipe(imagemin())
     .pipe(gulp.dest('.imagemin/' + path));
+  });
+});
+
+gulp.task('resize', function() {
+  return paths.thumb.forEach(function(path, index, array) {
+    gulp.src(bases.src + path)
+    .pipe(imageresize({
+      width: 100,
+      quality: 0.6
+    }))
+    .pipe(rename({
+      suffix: '-100'
+    }))
+    .pipe(gulp.dest(bases.src + 'views/images/'))
   });
 });
 
