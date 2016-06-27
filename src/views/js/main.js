@@ -501,9 +501,19 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  var items = document.getElementsByClassName('mover');
+
+  // Refactor and remove phase calculation from loop
+  var scroll = document.body.scrollTop / 1250;
+  var phases = [];
+  phases[0] = Math.sin(scroll + 0);
+  phases[1] = Math.sin(scroll + 1);
+  phases[2] = Math.sin(scroll + 2);
+  phases[3] = Math.sin(scroll + 3);
+  phases[4] = Math.sin(scroll + 4);
+
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    var phase = phases[i % 5];
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
