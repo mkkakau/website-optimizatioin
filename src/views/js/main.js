@@ -540,7 +540,9 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var s = 256;
   var cols = 8;
-  var rows = Math.floor(window.innerHeight / s);
+  // Calculate number of rows of pizzas to render based on screen size
+  var rows = Math.ceil(window.innerHeight / s);
+  // Calculate number of pizzas
   var numOfBgPizzas = cols * rows;
 
   for (var i = 0; i < numOfBgPizzas; i++) {
