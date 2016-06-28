@@ -449,10 +449,15 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    var myPizzaContainers = document.getElementsByClassName('randomPizzaContainer');
+    if (myPizzaContainers.length > 0) {
+      // All pizzas are same size so dx and new width doesn't need to be calculated in the loop
+      var dx = determineDx(myPizzaContainers[0], size);
+      var newwidth = (myPizzaContainers[0].offsetWidth + dx) + 'px';
+
+      for (var i = 0; i < myPizzaContainers.length; i++) {
+        myPizzaContainers[i].style.width = newwidth;
+      }
     }
   }
 
@@ -536,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var s = 256;
   var cols = 8;
   var rows = Math.floor(window.innerHeight / s);
-  var numberOfBgPizzas = cols * rows;
+  var numOfBgPizzas = cols * rows;
 
   for (var i = 0; i < numOfBgPizzas; i++) {
     var elem = document.createElement('img');
