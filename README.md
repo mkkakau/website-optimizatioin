@@ -22,5 +22,6 @@ Follow this link to see my score: [PageSpeed Insights](https://developers.google
 
 ###Part 2: Optimize Frames per Second in pizza.html
 
-* TODO: updatePositions() is a bottleneck
-* TODO: Don't need to render 200 pizzas
+* Remove calculations from loop in updatePositions()
+* Remove calculations from loop in changePizzaSizes()
+* Calculate number of background pizzas to be rendered based on screen height
